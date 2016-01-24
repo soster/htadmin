@@ -11,18 +11,18 @@ You find the application in `sites/html/htadmin`.
 
 Just install vagrant and virtual box and type
 
- vagrant up
+`vagrant up`
  
 to start the vm. After startup point your browser to:
 
-http://localhost/htadmin/ 
+<http://localhost/htadmin/>
 
-Standard access: admin / admin, make sure to change that in your config/config.ini. You have to enter a hashed password, there is a tool for its generation included in the webapp:
+Standard access: admin / admin, make sure to change that in your `...config/config.ini`. You have to enter a hashed password, there is a tool for its generation included in the webapp:
 
-http://localhost/htadmin/adminpwd.php
+<http://localhost/htadmin/adminpwd.php>
 
 the .htaccess and .htpasswd files are configured for this folder:
 
-http://localhost/test/ 
+<http://localhost/test/>
 
 Enjoy!
