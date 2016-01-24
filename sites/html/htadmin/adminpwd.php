@@ -1,12 +1,8 @@
 <?php
 include_once ('includes/checklogin.php');
-include_once('tools/util.php');
-$ini = read_config();
 include_once ('includes/head.php');
-
-//$salt = $ini['admin_pwd_salt'];
-include_once ('tools/htpasswd.php');
 include_once ('includes/nav.php');
+include_once ('tools/htpasswd.php');
 
 ?>
 
@@ -20,7 +16,7 @@ include_once ('includes/nav.php');
 				?>
 					<div class="alert alert-info">
 					<?php
-					echo "<p>Your new hash: " . htpasswd::htcrypt($_POST['pwd']) . "</p>";
+					echo "<p>Your new hash: <code>" . htpasswd::htcrypt($_POST['pwd']) . "</code></p>";
 					?>
 						</div>
 				    <?php
@@ -39,6 +35,12 @@ include_once ('includes/nav.php');
 				</div>
 			</form>
 			
+		</div>
+	</div>
+		<div class=row>
+	<br/><br/>
+		<div class="col-xs-12 col-md-10 well">
+			<p>Use this generated hash in <code>config/config.ini</code> for the <code>admin_pwd_hash</code> key.</p>
 		</div>
 	</div>
 </div>

@@ -73,9 +73,6 @@ class php{
     ensure => present,
   }
 
-  package { "php5-imagick":
-    ensure => present,
-  }
 
   package { "php5-mcrypt":
     ensure => present,
@@ -93,20 +90,11 @@ class php{
     ensure => present,
   }
 
-  package { "php5-sqlite":
-    ensure => present,
-  }
 
   package { "libapache2-mod-php5":
     ensure => present,
   }
   
-  exec { "reload_apache":
-    command => "/etc/init.d/apache2 reload",
-  }
-  
-
-
 }
 
 class mysql{
@@ -130,5 +118,6 @@ class mysql{
 include base
 include apache
 include php
-include mysql
+# We don't need mysql right now:
+# include mysql
 

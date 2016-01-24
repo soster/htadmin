@@ -1,9 +1,8 @@
 <?php
 session_start();
 include_once ('includes/head.php');
-include_once('tools/util.php');
-$ini = read_config();
 $_SESSION ['login'] = false;
+
 include_once ('includes/nav.php');
 ?>
 

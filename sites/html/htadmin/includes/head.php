@@ -1,3 +1,9 @@
+<?php 
+include_once ('tools/util.php');
+if (!isset($ini)) {
+	$ini = read_config ();
+}
+?>
 <html>
 <head>
 <!-- Latest compiled and minified CSS -->
@@ -12,7 +18,7 @@
 <script src="script/script.js"></script>
 <link rel="stylesheet" href="styles/style.css">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Password Generator</title>
+<title><?php echo $ini ['app_title']; ?></title>
 </head>
 <body>
 

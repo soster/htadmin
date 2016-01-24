@@ -1,8 +1,6 @@
 <?php
-include_once ('includes/head.php');
 include_once ('tools/htpasswd.php');
-include_once ('tools/util.php');
-$ini = read_config ();
+include_once ('includes/head.php');
 include_once ('includes/nav.php');
 
 $htpasswd = new htpasswd ( $ini ['secure_path'] . ".htpasswd" );
