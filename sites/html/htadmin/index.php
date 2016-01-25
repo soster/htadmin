@@ -4,7 +4,7 @@ include_once ('tools/htpasswd.php');
 include_once ('includes/head.php');
 include_once ('includes/nav.php');
 
-$htpasswd = new htpasswd ( $ini ['secure_path'] . ".htpasswd" ); // path to your .htpasswd file
+$htpasswd = new htpasswd ( $ini ['secure_path'] );
 
 ?>
 

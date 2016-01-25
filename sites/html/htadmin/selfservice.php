@@ -1,9 +1,10 @@
 <?php
+session_start();
 include_once ('tools/htpasswd.php');
 include_once ('includes/head.php');
 include_once ('includes/nav.php');
 
-$htpasswd = new htpasswd ( $ini ['secure_path'] . ".htpasswd" );
+$htpasswd = new htpasswd ( $ini ['secure_path'] );
 
 ?>
 

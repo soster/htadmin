@@ -9,26 +9,31 @@ class htpasswd {
 	var $fp;
 	var $filename;
 	
-	const HTACCESS_CONTENT = "AuthType Basic\nAuthName \"Password Protected Area\"\nAuthUserFile XXX\nRequire valid-user";
-	
-	function htpasswd($filename) {
-		$basedir = realpath(dirname($filename));
-		$htaccessdir = $basedir . "/.htaccess";
+	const HTPASSWD_NAME = ".htpasswd";
+	const HTACCESS_NAME = ".htaccess";
 
-		if (!file_exists($filename)) {
-			@$this->fp = fopen ( $filename, 'w' );
-		} else {
-			@$this->fp = fopen ( $filename, 'r+' ) or die ( 'Invalid file name' );
-		}
+	
+	function htpasswd($configpath) {
+		$path = realpath($configpath);
+		$htaccessfile = $path . "/" . self::HTACCESS_NAME;
+		$htpasswdfile = $path . "/" . self::HTPASSWD_NAME;
 		
-		if (!file_exists($htaccessdir)) {
-			$bdfp = fopen($htaccessdir, 'w');
-			$htaccess_content = str_replace("XXX",realpath($filename),self::HTACCESS_CONTENT);
+		if (!file_exists($htaccessfile)) {
+			$bdfp = fopen($htaccessfile, 'w');
+			$htaccess_content = "AuthType Basic\nAuthName \"Password Protected Area\"\nAuthUserFile \"" . $htpasswdfile . "\"\nRequire valid-user";
 			fwrite($bdfp,$htaccess_content);
 		}
+
+		if (!file_exists($htpasswdfile)) {
+			@$this->fp = fopen ( $htpasswdfile, 'w+' );
+		} else {
+			@$this->fp = fopen ( $htpasswdfile, 'r+' ) or die ( 'Invalid file name' );
+		}
+		
+
 		
 		
-		$this->filename = $filename;
+		$this->filename = $htpasswdfile;
 	}
 	function user_exists($username) {
 		rewind ( $this->fp );

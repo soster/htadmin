@@ -13,7 +13,7 @@ if (check_login ()) {
 				</a>
 				<li><a href="adminpwd.php">Admin password</a></li>
 				<li><a href="logout.php">Logout</a></li>
-				<li><a href="selfservice.php">Change my password</a></li>
+				<li><a href="selfservice.php">User Self Service</a></li>
 			</ul>
 		</div>
 	</div>
@@ -33,7 +33,7 @@ if (check_login ()) {
 	?>
 				</a>
 				<li><a href="login.php">Login</a></li>
-				<li><a href="login.php">Change my password</a></li>
+				<li><a href="login.php">User Self Service</a></li>
 			</ul>
 		</div>
 	</div>

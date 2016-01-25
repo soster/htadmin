@@ -2,13 +2,13 @@
 session_start();
 include_once("tools/util.php");
 if (!check_login()) {
-	echo "error";
+	echo "unauthorized";
 	die();
 }
 include_once ('tools/htpasswd.php');
 $ini = read_config();
 
-$htpasswd = new htpasswd ( $ini ['secure_path'] . ".htpasswd" );
+$htpasswd = new htpasswd ( $ini ['secure_path'] );
 
 if (isset ( $_POST['user'] )) {
 	$user = $_POST['user'];
