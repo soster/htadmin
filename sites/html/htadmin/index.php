@@ -4,7 +4,8 @@ include_once ('tools/htpasswd.php');
 include_once ('includes/head.php');
 include_once ('includes/nav.php');
 
-$htpasswd = new htpasswd ( $ini ['secure_path'] );
+$htpasswd = new htpasswd ( $ini ['secure_path'], true);
+$use_metadata = $ini ['use_metadata'];
 
 ?>
 
@@ -72,8 +73,20 @@ if (isset ( $_POST ['user'] )) {
 			<ul class="list-group">
 			<?php
 			$users = $htpasswd->get_users ();
+			if ($use_metadata) {
+				$meta_map = $htpasswd->get_metadata();
+			}
+			
 			foreach ( $users as $user ) {
-				echo "<li class='list-group-item list-item-with-button id-" . htmlspecialchars ( $user ) . "' onclick=\"setUserField('" . $user . "');\">" . htmlspecialchars ( $user ) . "<a class='btn btn-danger btn-list-item pull-right' " . "onclick=\"deleteUser('" . $user . "');\"" . "href='#' >Delete</a>" . "</li>\n";
+				echo "<li class='list-group-item list-item-with-button id-" . htmlspecialchars ( $user ) . 
+				" ' onclick=\"setUserField('" . htmlspecialchars ( $user ) . "');\">" . 
+				htmlspecialchars ( $user ) . " ";
+				if ($use_metadata && isset ($meta_map[$user])) {
+					echo $meta_map[$user]->email . " " .
+					$meta_map[$user]->name . " ";
+				}				
+				"<a class='btn btn-danger btn-list-item pull-right' " . 
+				"onclick=\"deleteUser('" . htmlspecialchars ( $user ) . "');\"" . "href='#' >Delete</a>" . "</li>\n";
 			}
 			?>
 			</ul>

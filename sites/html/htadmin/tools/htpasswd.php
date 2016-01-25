@@ -1,47 +1,77 @@
 <?php
-
+include_once("model/meta_model.php");
 /**
  * htpasswd tools for Apache Basic Auth. 
  * Uses crypt only!
-  *
+ *
  */
 class htpasswd {
 	var $fp;
+	var $metafp;
 	var $filename;
-	
+	var $metafilename;
+	var $use_metadata;
+
+	/* All ht-files. These files are stored within the secured folder. */
 	const HTPASSWD_NAME = ".htpasswd";
 	const HTACCESS_NAME = ".htaccess";
-
+	const HTMETA_NAME	= ".htmeta";
 	
-	function htpasswd($configpath) {
+	function htpasswd($configpath, $use_metadata = false) {
 		$path = realpath($configpath);
 		$htaccessfile = $path . "/" . self::HTACCESS_NAME;
 		$htpasswdfile = $path . "/" . self::HTPASSWD_NAME;
+		@$this->use_metadata = $use_metadata;
 		
 		if (!file_exists($htaccessfile)) {
 			$bdfp = fopen($htaccessfile, 'w');
-			$htaccess_content = "AuthType Basic\nAuthName \"Password Protected Area\"\nAuthUserFile \"" . $htpasswdfile . "\"\nRequire valid-user";
+			$htaccess_content = "AuthType Basic\nAuthName \"Password Protected Area\"\nAuthUserFile \"" . $htpasswdfile . 
+			"\"\nRequire valid-user" .
+			"<Files .ht*>\nOrder deny,allow\nDeny from all\n</Files>";
 			fwrite($bdfp,$htaccess_content);
 		}
-
-		if (!file_exists($htpasswdfile)) {
-			@$this->fp = fopen ( $htpasswdfile, 'w+' );
-		} else {
-			@$this->fp = fopen ( $htpasswdfile, 'r+' ) or die ( 'Invalid file name' );
+		
+		@$this->fp = @$this::open_or_create($htpasswdfile);
+		
+		if ($use_metadata) {
+			$htmetafile = $path . "/" . self::HTMETA_NAME;
+			@$this->metafp = @$this::open_or_create($htmetafile);				
 		}
-		
 
-		
-		
-		$this->filename = $htpasswdfile;
+		$this->filename 	= $htpasswdfile;
+		$this->metafilename = $htmetafile;
 	}
+	
+	function open_or_create($filename) {
+		if (!file_exists($filename)) {
+			return fopen ( $filename, 'w+' );
+		} else {
+			return fopen ( $filename, 'r+' );
+		}
+	}
+	
 	function user_exists($username) {
 		rewind ( $this->fp );
 		while ( ! feof ( $this->fp ) && trim ( $lusername = array_shift ( explode ( ":", $line = rtrim ( fgets ( $this->fp ) ) ) ) ) ) {
 			if ($lusername == $username)
-				return 1;
+				return true;
 		}
-		return 0;
+		return false;
+	}
+	
+	function get_metadata() {
+		rewind ( $this->metafp );
+		$meta_model_map = array();
+		$metaarr = array();
+		while ( ! feof ( $this->metafp ) && $line = rtrim ( fgets ( $this->metafp ) ) ) {
+				$metaarr = explode(":", $line);
+				$model = new meta_model();
+				$model->user = $metaarr[0];
+				$model->email = $metaarr[1];
+				$model->name = $metaarr[2];
+				$meta_model_map[$model->user] = $model;
+		}
+		return $meta_model_map;
 	}
 	
 	function get_users() {
@@ -98,20 +128,29 @@ class htpasswd {
 	
 	
 	function user_delete($username) {
+		return self::delete(@$this->fp, $username, @$this->filename);
+	}
+	
+	function meta_delete($username) {
+		return self::delete(@$this->metafp, $username, @$this->metafilename);
+	}
+	
+	static function delete($fp, $username, $filename) {
 		$data = '';
-		rewind ( $this->fp );
-		while ( ! feof ( $this->fp ) && trim ( $lusername = array_shift ( explode ( ":", $line = rtrim ( fgets ( $this->fp ) ) ) ) ) ) {
+		rewind ( $fp );
+		while ( ! feof ( $fp ) && trim ( $lusername = array_shift ( explode ( ":", $line = rtrim ( fgets ( $fp ) ) ) ) ) ) {
 			if (! trim ( $line ))
 				break;
-			if ($lusername != $username)
-				$data .= $line . "\n";
+				if ($lusername != $username)
+					$data .= $line . "\n";
 		}
-		$this->fp = fopen ( $this->filename, 'w' );
-		fwrite ( $this->fp, rtrim ( $data ) . (trim ( $data ) ? "\n" : '') );
-		fclose ( $this->fp );
-		$this->fp = fopen ( $this->filename, 'r+' );
+		$fp = fopen ( $filename, 'w' );
+		fwrite ( $fp, rtrim ( $data ) . (trim ( $data ) ? "\n" : '') );
+		fclose ( $fp );
+		$fp = fopen ( $filename, 'r+' );
 		return true;
 	}
+	
 	
 	function user_update($username, $password) {
 		rewind ( $this->fp );
