@@ -33,7 +33,7 @@ if (check_login ()) {
 	?>
 				</a>
 				<li><a href="login.php">Login</a></li>
-				<li><a href="login.php">User Self Service</a></li>
+				<li><a href="selfservice.php">User Self Service</a></li>
 			</ul>
 		</div>
 	</div>
