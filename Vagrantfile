@@ -24,6 +24,7 @@ Vagrant.configure("2") do |config|
   forward_port[80, 80]  # nginx/apache
   
   
+  
   config.vm.provision :shell do |shell|
     shell.inline = "puppet module install --force puppetlabs-stdlib"
     shell.inline = "puppet module install --force puppetlabs-apache"

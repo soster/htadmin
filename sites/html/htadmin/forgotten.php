@@ -27,7 +27,8 @@ $show_standardform = true;
 				$alert_message = "Email not found: " . htmlspecialchars ( $email );
 				include_once ('includes/inline_message.php');
 			} else {
-				$meta_model = $htpasswd->get_metadata () [$user];
+				$meta_models = $htpasswd->get_metadata ();
+				$meta_model = $meta_models [$user];
 				$link = $mailUrl . '?' . 'user=' . urldecode ( $user ) . '&' . 'key=' . urlencode ( $meta_model->mailkey );
 				send_forgotten_mail ( $email, $user, $link );
 				$alert_class = "alert-info";
@@ -39,7 +40,8 @@ $show_standardform = true;
 		if (isset ( $_GET ['user'] ) && isset ( $_GET ['key'] )) {
 			$user = $_GET ['user'];
 			$key = $_GET ['key'];
-			$meta_model = $htpasswd->get_metadata () [$user];
+			$meta_models = $htpasswd->get_metadata ();
+			$meta_model = $meta_models [$user];
 			if (isset ( $meta_model ) && $meta_model->mailkey === $key) {
 				$show_standardform = false;
 				?>
@@ -79,7 +81,8 @@ $show_standardform = true;
 			$user = $_POST ['user'];
 			$key = $_POST ['key'];
 			$pwd = $_POST ['pwd'];
-			$meta_model = $htpasswd->get_metadata () [$user];
+			$meta_models = $htpasswd->get_metadata ();
+			$meta_model = $meta_models[$user];
 			if (isset ( $meta_model ) && $meta_model->mailkey === $key) {
 				$htpasswd->user_update ( $user, $pwd );
 				$meta_model->mailkey = random_password ( 8 );
