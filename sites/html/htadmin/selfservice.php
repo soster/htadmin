@@ -67,6 +67,7 @@ if (isset ( $_POST ['user'] ) && isset ( $_POST ['oldpwd'] ) && isset ( $_POST [
 
 
 	</div>
+	<p>Forgot your password? Click <a href="forgotten.php">here</a>.
 		<div class=row>
 	<br/><br/>
 		<div class="col-xs-12 col-md-10 well">

@@ -34,6 +34,7 @@ if (check_login ()) {
 				</a>
 				<li><a href="login.php">Login</a></li>
 				<li><a href="selfservice.php">User Self Service</a></li>
+				<li><a href="forgotten.php">Password forgotten</a></li>
 			</ul>
 		</div>
 	</div>
