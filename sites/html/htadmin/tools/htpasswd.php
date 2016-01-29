@@ -24,7 +24,7 @@ class htpasswd {
 		
 		if (! file_exists ( $htaccessfile )) {
 			$bdfp = fopen ( $htaccessfile, 'w' );
-			$htaccess_content = "AuthType Basic\nAuthName \"Password Protected Area\"\nAuthUserFile \"" . $htpasswdfile . "\"\nRequire valid-user" . "<Files .ht*>\nOrder deny,allow\nDeny from all\n</Files>";
+			$htaccess_content = "AuthType Basic\nAuthName \"Password Protected Area\"\nAuthUserFile \"" . $htpasswdfile . "\"\nRequire valid-user" . "\n<Files .ht*>\nOrder deny,allow\nDeny from all\n</Files>";
 			fwrite ( $bdfp, $htaccess_content );
 		}
 		
