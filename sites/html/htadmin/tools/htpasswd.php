@@ -1,5 +1,6 @@
 <?php
 include_once ("model/meta_model.php");
+include_once ("hash_tool.php");
 /**
  * htpasswd tools for Apache Basic Auth.
  *
@@ -117,17 +118,20 @@ class htpasswd {
 		rewind ( $this->fp );
 		while ( ! feof ( $this->fp ) && $userpass = explode ( ":", $line = rtrim ( fgets ( $this->fp ) ) ) ) {
 			$lusername = trim ( $userpass [0] );
-			$hash = $userpass [1];
+			$hash = trim ($userpass [1] );
 			
 			if ($lusername == $username) {
-				return (self::check_password_hash ( $password, $hash ));
+				$validator = self::create_hash_tool($hash);
+				return $validator->check_password_hash($password, $hash);
 			}
 		}
 		return false;
 	}
+	
 	function user_delete($username) {
 		return self::delete ( @$this->fp, $username, @$this->filename );
 	}
+	
 	function meta_delete($username) {
 		return self::delete ( @$this->metafp, $username, @$this->metafilename );
 	}
@@ -183,13 +187,17 @@ class htpasswd {
 	static function htcrypt($password) {
 		return crypt ( $password, substr ( str_replace ( '+', '.', base64_encode ( pack ( 'N4', mt_rand (), mt_rand (), mt_rand (), mt_rand () ) ) ), 0, 22 ) );
 	}
-	static function check_password_hash($password, $hash) {
-		$salt = substr ( $hash, 0, 2 );
-		if (crypt ( $password, $salt ) == $hash) {
-			return true;
+
+	
+	static function create_hash_tool($hash) {
+		if (strpos($hash, '$apr1') === 0) {
+			return new md5_hash_tool();
 		} else {
-			return false;
+			return new crypt_hash_tool();
 		}
 	}
-}
+		
+}	
+	
+
 ?>

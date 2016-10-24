@@ -7,9 +7,12 @@ $ini = read_config();
 if (isset ( $_POST ['user'] ) && isset ( $_POST ['password'] )) {
 	$username = $_POST ['user'];
 	$password = $_POST ['password'];
+	
+	$hash_tool = new crypt_hash_tool();
+	
 
 
-	if ($username == $ini['admin_user'] && htpasswd::check_password_hash($password,$ini['admin_pwd_hash'])) {
+	if ($username == $ini['admin_user'] && $hash_tool->check_password_hash($password,$ini['admin_pwd_hash'])) {
 		$_SESSION ['login'] = true;
 		header ( 'LOCATION:index.php' );
 		die ();
