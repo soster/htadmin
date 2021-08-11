@@ -2,4 +2,7 @@
 .buildpath
 .project
 .settings/
+sites/html/test/.htpasswd
+sites/html/test/.htmeta
+sites/html/test/.htaccess
 sites/html/index.html
