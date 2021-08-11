@@ -17,7 +17,7 @@ class htpasswd {
 	const HTPASSWD_NAME = ".htpasswd";
 	const HTACCESS_NAME = ".htaccess";
 	const HTMETA_NAME = ".htmeta";
-	function htpasswd($configpath, $use_metadata = false) {
+	function __construct($configpath, $use_metadata = false) {
 		$path = realpath ( $configpath );
 		$htaccessfile = $path . "/" . self::HTACCESS_NAME;
 		$htpasswdfile = $path . "/" . self::HTPASSWD_NAME;
@@ -26,10 +26,17 @@ class htpasswd {
 		if (! file_exists ( $htaccessfile )) {
 			$bdfp = fopen ( $htaccessfile, 'w' );
 			$htaccess_content = "AuthType Basic\nAuthName \"Password Protected Area\"\nAuthUserFile \"" . $htpasswdfile . "\"\nRequire valid-user" . "\n<Files .ht*>\nOrder deny,allow\nDeny from all\n</Files>";
-			fwrite ( $bdfp, $htaccess_content );
+			if (!fwrite ( $bdfp, $htaccess_content )) {
+				echo ("can not write to file " . $htaccessfile);
+			}
 		}
-		
+
+
 		@$this->fp = @$this::open_or_create ( $htpasswdfile );
+
+		if ($this->fp == null) {
+			echo ("can not read/write file " .$htpasswdfile);
+		}
 		
 		if ($use_metadata) {
 			$htmetafile = $path . "/" . self::HTMETA_NAME;
@@ -59,9 +66,15 @@ class htpasswd {
 		return null;
 	}
 	function get_metadata() {
-		rewind ( $this->metafp );
 		$meta_model_map = array ();
 		$metaarr = array ();
+
+		if ( $this->metafp == null) {
+			return $meta_model_map;
+		}
+
+		rewind ( $this->metafp );
+
 		while ( ! feof ( $this->metafp ) && $line = rtrim ( fgets ( $this->metafp ) ) ) {
 			$metaarr = explode ( ":", $line );
 			$model = new meta_model ();
@@ -81,10 +94,17 @@ class htpasswd {
 		return $meta_model_map;
 	}
 	function get_users() {
-		rewind ( $this->fp );
 		$users = array ();
+		if ( $this->fp == null) {
+			return $users;
+		}
+
+		rewind ( $this->fp );
+
 		$i = 0;
-		while ( ! feof ( $this->fp ) && trim ( $lusername = array_shift ( explode ( ":", $line = rtrim ( fgets ( $this->fp ) ) ) ) ) ) {
+		while ( ! feof ( $this->fp )) {
+			$usernames = explode ( ":", $line = rtrim ( fgets ( $this->fp ) ) );
+			trim ( $lusername = array_shift ( $usernames ) );
 			$users [$i] = $lusername;
 			$i ++;
 		}
@@ -93,16 +113,24 @@ class htpasswd {
 	function user_add($username, $password) {
 		if ($this->user_exists ( $username ))
 			return false;
+		if ($this->fp==null) {
+			return false;
+		}
 		fseek ( $this->fp, 0, SEEK_END );
 		fwrite ( $this->fp, $username . ':' . self::htcrypt ( $password ) . "\n" );
 		return true;
 	}
 	function meta_add(meta_model $meta_model) {
+		if ($this->metafp==null) {
+			return false;
+		}
 		if (self::exists ( @$this->metafp, $meta_model->user )) {
 			return false;
 		}
 		fseek ( $this->metafp, 0, SEEK_END );
-		fwrite ( $this->metafp, $meta_model->user . ':' . $meta_model->email . ':' . $meta_model->name . ':' . $meta_model->mailkey . "\n" );
+		if (!fwrite ( $this->metafp, $meta_model->user . ':' . $meta_model->email . ':' . $meta_model->name . ':' . $meta_model->mailkey . "\n" )) {
+			echo ("can not write to file for meta_add!");
+		}
 		return true;
 	}
 	
@@ -155,8 +183,13 @@ class htpasswd {
 		fwrite ( $fp, $meta_model->user . ':' . $meta_model->email . ':' . $meta_model->name . "\n" );
 	}
 	static function exists($fp, $username) {
+		if ($fp == null) {
+			return false;
+		}
 		rewind ( $fp );
-		while ( ! feof ( $fp ) && trim ( $lusername = array_shift ( explode ( ":", $line = rtrim ( fgets ( $fp ) ) ) ) ) ) {
+		while ( ! feof ( $fp )) {
+			$usernames = explode ( ":", $line = rtrim ( fgets ( $fp ) ) );
+			trim ( $lusername = array_shift ( $usernames ) );
 			if ($lusername == $username)
 				return true;
 		}

@@ -33,7 +33,7 @@ if (count ( $users ) == 0) {
 	<?php
 	
 	foreach ( $users as $user ) {
-		if ($use_metadata) {
+		if ($use_metadata && $meta_map != null && array_key_exists($user,$meta_map)) {
 			$fieldjs = "onclick=\"setUserField('" . htmlspecialchars ( $user ) . "', '" . htmlspecialchars ( $meta_map [$user]->email ) . "', '" . htmlspecialchars ( $meta_map [$user]->name ) . "');\"";
 		} else {
 			$fieldjs = "onclick=\"setUserField('" . htmlspecialchars ( $user ) . "','','');\"";
