@@ -1,7 +1,7 @@
 version: '3'
 services:
     web:
-        image: nginx:latest
+        image: nginx:1.21
         ports:
             - "80:80"
         volumes:
@@ -11,5 +11,7 @@ services:
         build:
             context: .
             dockerfile: php.dockerfile
+        expose:
+            - 9000
         volumes:
             - ./app:/app

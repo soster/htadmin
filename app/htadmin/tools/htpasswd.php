@@ -144,10 +144,9 @@ class htpasswd {
 	 */
 	function user_check($username, $password) {
 		rewind ( $this->fp );
-		while ( ! feof ( $this->fp ) && $userpass = explode ( ":", $line = rtrim ( fgets ( $this->fp ) ) ) ) {
-			$lusername = trim ( $userpass [0] );
-			$hash = trim ($userpass [1] );
-			
+		while ( ! feof ( $this->fp )) {
+			$lusername = username_from_line($this->fp);
+			$hash = trim ($userpass [1] );	
 			if ($lusername == $username) {
 				$validator = self::create_hash_tool($hash);
 				return $validator->check_password_hash($password, $hash);
@@ -165,7 +164,9 @@ class htpasswd {
 	}
 	function user_update($username, $password) {
 		rewind ( $this->fp );
-		while ( ! feof ( $this->fp ) && trim ( $lusername = array_shift ( explode ( ":", $line = rtrim ( fgets ( $this->fp ) ) ) ) ) ) {
+		while ( ! feof ( $this->fp ) ) {
+		$usernames = explode ( ":", $line = rtrim ( fgets ( $this->fp ) ) );
+		trim ( $lusername = array_shift ( $usernames ) );
 			if ($lusername == $username) {
 				fseek ( $this->fp, (- 15 - strlen ( $username )), SEEK_CUR );
 				fwrite ( $this->fp, $username . ':' . self::htcrypt ( $password ) . "\n" );
@@ -188,8 +189,7 @@ class htpasswd {
 		}
 		rewind ( $fp );
 		while ( ! feof ( $fp )) {
-			$usernames = explode ( ":", $line = rtrim ( fgets ( $fp ) ) );
-			trim ( $lusername = array_shift ( $usernames ) );
+			$lusername = username_from_line($fp);
 			if ($lusername == $username)
 				return true;
 		}
@@ -205,7 +205,10 @@ class htpasswd {
 	static function delete($fp, $username, $filename) {
 		$data = '';
 		rewind ( $fp );
-		while ( ! feof ( $fp ) && trim ( $lusername = array_shift ( explode ( ":", $line = rtrim ( fgets ( $fp ) ) ) ) ) ) {
+		while ( ! feof ( $fp ) ) {
+
+			$usernames = explode ( ":", $line = rtrim ( fgets ( $fp ) ) );
+			trim ( $lusername = array_shift ( $usernames ) );
 			if (! trim ( $line ))
 				break;
 			if ($lusername != $username)

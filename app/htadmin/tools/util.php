@@ -36,4 +36,10 @@ function random_password($length) {
 	return implode($pass); //turn the array into a string
 }
 
+function username_from_line($fp) {
+	$usernames = explode ( ":", $line = rtrim ( fgets ( $fp ) ) );
+	trim ( $lusername = array_shift ( $usernames ) );
+	return $lusername;
+}
+
 ?>

@@ -1,6 +1,6 @@
-; <?php die(); ?>
 ; HTAdmin config file.
 ; Important: secure this file from access
+; Rename to config.ini!
 [application]
 ; Change this to customize your title:
 app_title = HTAdmin
@@ -17,7 +17,9 @@ admin_user = admin
 admin_pwd_hash = VPZ23KZUsquyk
 
 ; Password reset mail via smtp:
-mail_from = something@somewhere
-mail_user = smtpuser@somewhere
-mail_pwd  = xxxx
-mail_server = localhost
+mail_from = "sometest@something.de"
+mail_user = "sometest@something.de"
+; Use smtp if you set the mail_server, otherwise use sendmail.
+mail_server = "mailserver.de"
+mail_pwd  = "secret-password"
+

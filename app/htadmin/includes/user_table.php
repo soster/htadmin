@@ -33,6 +33,9 @@ if (count ( $users ) == 0) {
 	<?php
 	
 	foreach ( $users as $user ) {
+		if ($user == null || trim($user) ==='') {
+			continue;
+		}
 		if ($use_metadata && $meta_map != null && array_key_exists($user,$meta_map)) {
 			$fieldjs = "onclick=\"setUserField('" . htmlspecialchars ( $user ) . "', '" . htmlspecialchars ( $meta_map [$user]->email ) . "', '" . htmlspecialchars ( $meta_map [$user]->name ) . "');\"";
 		} else {
@@ -44,6 +47,9 @@ if (count ( $users ) == 0) {
 		if ($use_metadata && isset ( $meta_map [$user] )) {
 			echo "<td scope='row'>" . htmlspecialchars ( $meta_map [$user]->email ) . "</td>";
 			echo "<td scope='row'>" . htmlspecialchars ( $meta_map [$user]->name ) . "</td>";
+		} else {
+			echo "<td scope='row'> </td>";
+			echo "<td scope='row'> </td>";
 		}
 		echo "<td scope='row'><a class='btn btn-danger pull-right' " . "onclick=\"deleteUser('" . htmlspecialchars ( $user ) . "');\"" . "href='#' >Delete</a>" . "</li></td>";
 	}
