@@ -13,7 +13,8 @@ services:
         build:
             context: .
             dockerfile: php.dockerfile
-        expose:
-            - 9000
         volumes:
             - ./app:/app
+        environment:
+            PHP_XDEBUG_ENABLED: 1 # Set 1 to enable.
+            XDEBUG_CONFIG: "mode=debug client_host=host.docker.internal discover_client_host=true client_port=9003"
