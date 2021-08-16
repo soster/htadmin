@@ -6,7 +6,7 @@
 app_title = HTAdmin
 
 ; Path to html files which have to be secured: 
-secure_path  = /app/test/
+secure_path  = /app/
 
 ; Use metadata (necessary e.g. for password reset via mail):
 use_metadata = true

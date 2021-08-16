@@ -24,7 +24,7 @@ if (isset ( $_POST ['user'] )) {
 		$meta_model->user = $username;
 		$meta_model->email = $_POST ['email'];
 		$meta_model->name = $_POST ['name'];
-		$meta_model->mailkey = random_password(8);
+		$meta_model->mailkey = random_password(PASSWORD_LENGTH);
 	}
 	
 	if (! check_username ( $username ) || ! check_password_quality ( $passwd )) {

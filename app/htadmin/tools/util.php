@@ -25,6 +25,9 @@ function check_username($username) {
 
 }
 
+// default password / mailkey length:
+const PASSWORD_LENGTH = 18;
+
 function random_password($length) {
 	$alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ1234567890';
 	$pass = array(); //remember to declare $pass as an array

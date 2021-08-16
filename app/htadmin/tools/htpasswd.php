@@ -19,19 +19,10 @@ class htpasswd {
 	const HTMETA_NAME = ".htmeta";
 	function __construct($configpath, $use_metadata = false) {
 		$path = realpath ( $configpath );
-		$htaccessfile = $path . "/" . self::HTACCESS_NAME;
 		$htpasswdfile = $path . "/" . self::HTPASSWD_NAME;
 		@$this->use_metadata = $use_metadata;
+
 		
-		if (! file_exists ( $htaccessfile )) {
-			$could_write = $bdfp = fopen ( $htaccessfile, 'w' );
-			$htaccess_content = "AuthType Basic\nAuthName \"Password Protected Area\"\nAuthUserFile \"" . $htpasswdfile . "\"\nRequire valid-user" . "\n<Files .ht*>\nOrder deny,allow\nDeny from all\n</Files>";
-			if (! $could_write || !fwrite ( $bdfp, $htaccess_content )) {
-				echo ("can not write to file " . $htaccessfile);
-			}
-		}
-
-
 		@$this->fp = @$this::open_or_create ( $htpasswdfile );
 
 		if ($this->fp == null) {
@@ -168,9 +159,11 @@ class htpasswd {
 		$usernames = explode ( ":", $line = rtrim ( fgets ( $this->fp ) ) );
 		trim ( $lusername = array_shift ( $usernames ) );
 			if ($lusername == $username) {
-				fseek ( $this->fp, (- 15 - strlen ( $username )), SEEK_CUR );
-				fwrite ( $this->fp, $username . ':' . self::htcrypt ( $password ) . "\n" );
-				return true;
+                fseek ( $this->fp, (- 1 - strlen($line)), SEEK_CUR );
+                self::delete($this->fp, $username, $this->filename, false);
+                file_put_contents ( $this->filename, 
+                    $username . ':' . self::htcrypt ( $password ) . "\n" ,
+                    FILE_APPEND | LOCK_EX);
 			}
 		}
 		return false;

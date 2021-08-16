@@ -6,4 +6,7 @@ app/htadmin/config/config.ini
 app/test/.htpasswd
 app/test/.htmeta
 app/test/.htaccess
+app/.htpasswd
+app/.htmeta
+app/.htaccess
 app/index.html
