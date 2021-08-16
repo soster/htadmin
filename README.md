@@ -5,7 +5,7 @@ HTAdmin is a simple htpasswd editor implemented in PHP with a nice frontend (bas
 
 It comes with a preconfigured docker-compose.yml, so you don't have to install a LAMP stack locally for testing but can use docker instead.
 
-You find the application in `sites/html/htadmin`.
+You find the application in `app/htadmin` and the area to secure for testing in `app/test`.
 
 ![Screenshot](screenshot.png "Screenshot")
 
