@@ -1,7 +1,7 @@
 HTAdmin
 =======
 
-HTAdmin is a simple .htaccess and .htpasswd editor implemented in PHP with a nice frontend (based on bootstrap). It's intended to secure a folder of plain html files with multiple users. The admin has to create a user, but every user can change his password by himself using a self service area. It is also possible to send a password reset mail. You can use the .htpasswd with nginx and Apache, in the example we use nginx.
+HTAdmin is a simple htpasswd editor implemented in PHP with a nice frontend (based on bootstrap). It's intended to update and maintain users and password hashes in a .htpasswd file. The admin has to create a user, but every user can change his password by himself using a self service area. It is also possible to send a password reset mail. You can use the .htpasswd with nginx and Apache, in the example we use nginx.
 
 It comes with a preconfigured docker-compose.yml, so you don't have to install a LAMP stack locally for testing but can use docker instead.
 
