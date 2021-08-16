@@ -9,12 +9,18 @@ You find the application in `sites/html/htadmin`.
 
 ![Screenshot](screenshot.png "Screenshot")
 
+After cloning set the appropriate rights, change `user` with your user:
+
+`chown -R user:www-data app`
+
+PHP needs write permission for the user www-data.
+
+Create a config.ini within `app/htadmin/config` from the included example file `config.ini.example`.
+
 Install a recent docker and docker-compose and run:
 
 `docker-compose up -d`
  
-Before starting create a config.ini within `app/htadmin/config` from the included example file.
-
 After the build of the PHP image and startup of the containers point your browser to:
 
 <http://localhost/htadmin/>

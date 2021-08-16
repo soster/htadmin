@@ -24,9 +24,9 @@ class htpasswd {
 		@$this->use_metadata = $use_metadata;
 		
 		if (! file_exists ( $htaccessfile )) {
-			$bdfp = fopen ( $htaccessfile, 'w' );
+			$could_write = $bdfp = fopen ( $htaccessfile, 'w' );
 			$htaccess_content = "AuthType Basic\nAuthName \"Password Protected Area\"\nAuthUserFile \"" . $htpasswdfile . "\"\nRequire valid-user" . "\n<Files .ht*>\nOrder deny,allow\nDeny from all\n</Files>";
-			if (!fwrite ( $bdfp, $htaccess_content )) {
+			if (! $could_write || !fwrite ( $bdfp, $htaccess_content )) {
 				echo ("can not write to file " . $htaccessfile);
 			}
 		}

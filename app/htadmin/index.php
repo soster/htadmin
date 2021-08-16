@@ -92,7 +92,15 @@ if (isset ( $_POST ['user'] )) {
 						<button type="submit" class="btn btn-default">Submit</button>
 					</div>
 				</form>
-
+				<br /> <br />
+			<div class="col-xs-12 col-md-10 well">
+				<p>
+					Create new users for the htpasswd file here. A user can change
+					his/her password with this <a href="selfservice.php">self service
+						link.</a><br /> You can fill the username in the form if you add
+					the url parameter user=&lt;username&gt;
+				</p>
+			</div>	
 			</div>
 
 			<div class="col-xs-12 col-md-6">
@@ -103,21 +111,13 @@ if (isset ( $_POST ['user'] )) {
 				$meta_map = $htpasswd->get_metadata ();
 			}
 			include_once ("includes/user_table.php");			
-			?>			
+			?>		
 		</div>
+
 		</div>
-		<div class=row>
-			<br /> <br />
-			<div class="col-xs-12 col-md-10 well">
-				<p>
-					Create new users for the htpasswd file here. A user can change
-					his/her password with this <a href="selfservice.php">self service
-						link.</a><br /> You can fill the username in the form if you add
-					the url parameter user=&lt;username&gt;
-				</p>
-			</div>
-		</div>
+
 	</div>
+</div>
 <?php
 include_once ('includes/footer.php');
 ?>
