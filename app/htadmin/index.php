@@ -14,7 +14,7 @@ $use_metadata = $ini ['use_metadata'];
 		<div class="col-xs-12">
 <?php
 
-echo "<h2>" . $ini ['app_title'] . "</h2>";
+echo "<h2>" . htmlspecialchars($ini['app_title'], ENT_QUOTES, 'UTF-8') . "</h2>";
 
 if (isset ( $_POST ['user'] )) {
 	$username = $_POST ['user'];

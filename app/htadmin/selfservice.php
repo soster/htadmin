@@ -45,7 +45,7 @@ if (isset ( $_POST ['user'] ) && isset ( $_POST ['oldpwd'] ) && isset ( $_POST [
 				<div class="form-group">
 
 					<input type="text" class="userfield form-control"
-						placeholder="Username" name="user" <?php if (isset($_GET['user'])) echo "value=".htmlspecialchars($_GET['user']);?>>
+						placeholder="Username" name="user" <?php if (isset($_GET['user'])) echo 'value="' . htmlspecialchars($_GET['user'], ENT_QUOTES, 'UTF-8') . '"';?>>
 					</p>
 					<p>
 						<input class="passwordfield form-control" type="password"

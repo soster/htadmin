@@ -136,9 +136,14 @@ class htpasswd {
 	function user_check($username, $password) {
 		rewind ( $this->fp );
 		while ( ! feof ( $this->fp )) {
-			$lusername = username_from_line($this->fp);
-			$hash = trim ($userpass [1] );	
-			if ($lusername == $username) {
+			$line = rtrim ( fgets ( $this->fp ) );
+			if ($line === '' || $line === null) {
+				continue;
+			}
+			$parts = explode ( ":", $line, 2 );
+			$lusername = trim ( $parts [0] );
+			if ($lusername == $username && count ( $parts ) > 1 ) {
+				$hash = trim ( $parts [1] );
 				$validator = self::create_hash_tool($hash);
 				return $validator->check_password_hash($password, $hash);
 			}
@@ -214,7 +219,8 @@ class htpasswd {
 		return true;
 	}
 	static function htcrypt($password) {
-		return crypt ( $password, substr ( str_replace ( '+', '.', base64_encode ( pack ( 'N4', mt_rand (), mt_rand (), mt_rand (), mt_rand () ) ) ), 0, 22 ) );
+		// random salt from a cryptographically secure source (never mt_rand())
+		return crypt ( $password, substr ( str_replace ( '+', '.', base64_encode ( random_bytes ( 16 ) ) ), 0, 22 ) );
 	}
 
 	

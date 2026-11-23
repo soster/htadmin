@@ -8,7 +8,7 @@ if (check_login ()) {
 				<a class="navbar-brand" href="index.php"><span
 					class="glyphicon glyphicon-home">&nbsp;</span>
 				<?php
-	echo $ini['app_title'];
+	echo htmlspecialchars($ini['app_title'] ?? 'HTAdmin', ENT_QUOTES, 'UTF-8');
 	?>
 				</a>
 				<li><a href="adminpwd.php">Admin password</a></li>
@@ -29,7 +29,7 @@ if (check_login ()) {
 				<a class="navbar-brand" href="index.php"><span
 					class="glyphicon glyphicon-home">&nbsp;</span>
 				<?php
-	echo $ini['app_title'];
+	echo htmlspecialchars($ini['app_title'] ?? 'HTAdmin', ENT_QUOTES, 'UTF-8');
 	?>
 				</a>
 				<li><a href="login.php">Login</a></li>

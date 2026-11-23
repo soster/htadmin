@@ -28,7 +28,7 @@ $show_standardform = true;
 				include_once ('includes/inline_message.php');
 			} else {
 				$meta_models = $htpasswd->get_metadata ();
-				$meta_model = $meta_models [$user];
+				$meta_model = $meta_models [$user] ?? null;
 				$link = $mailUrl . '?' . 'user=' . urldecode ( $user ) . '&' . 'key=' . urlencode ( $meta_model->mailkey );
 				send_forgotten_mail ( $email, $user, $link );
 				$alert_class = "alert-info";
@@ -41,7 +41,7 @@ $show_standardform = true;
 			$user = $_GET ['user'];
 			$key = $_GET ['key'];
 			$meta_models = $htpasswd->get_metadata ();
-			$meta_model = $meta_models [$user];
+			$meta_model = $meta_models [$user] ?? null;
 			if (isset ( $meta_model ) && $meta_model->mailkey === $key) {
 				$show_standardform = false;
 				?>
@@ -57,10 +57,10 @@ $show_standardform = true;
 							</p>
 							<input type="hidden" class="userfield form-control"
 								placeholder="Password" name="user"
-								value='<?php echo htmlspecialchars($user);?>'> <input
+								value="<?php echo htmlspecialchars($user, ENT_QUOTES, 'UTF-8');?>"> <input
 								type="hidden" class="userfield form-control"
 								placeholder="Password" name="key"
-								value='<?php echo htmlspecialchars($key);?>'>
+								value="<?php echo htmlspecialchars($key, ENT_QUOTES, 'UTF-8');?>">
 
 
 							<button type="submit" class="btn btn-default">Submit</button>
@@ -82,10 +82,10 @@ $show_standardform = true;
 			$key = $_POST ['key'];
 			$pwd = $_POST ['pwd'];
 			$meta_models = $htpasswd->get_metadata ();
-			$meta_model = $meta_models[$user];
+			$meta_model = $meta_models[$user] ?? null;
 			if (isset ( $meta_model ) && $meta_model->mailkey === $key) {
 				$htpasswd->user_update ( $user, $pwd );
-				$meta_model->mailkey = random_password ( 8 );
+				$meta_model->mailkey = random_password ( PASSWORD_LENGTH );
 				$htpasswd->meta_update ( $meta_model );
 				$alert_class = "alert-info";
 				$alert_message = "Password changed.";

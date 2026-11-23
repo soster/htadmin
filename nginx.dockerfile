@@ -1,4 +1,4 @@
-FROM nginx:1.21
+FROM nginx:1.30
 
 
 # Customization of the nginx user and group ids in the image. It's 101:101 in

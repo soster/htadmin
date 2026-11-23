@@ -1,4 +1,3 @@
-version: '3'
 services:
     web:
         build:
@@ -16,5 +15,8 @@ services:
         volumes:
             - ./app:/app
         environment:
-            PHP_XDEBUG_ENABLED: 1 # Set 1 to enable.
+            PHP_XDEBUG_ENABLED: 1 # Set 0 to disable xdebug.
             XDEBUG_CONFIG: "mode=debug client_host=host.docker.internal discover_client_host=true client_port=9003"
+        extra_hosts:
+            # Make host.docker.internal resolvable on Linux hosts too
+            - "host.docker.internal:host-gateway"

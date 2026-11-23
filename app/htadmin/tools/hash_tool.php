@@ -75,7 +75,7 @@ class crypt_hash_tool implements i_password_hash_tool
 
 	public function crypt($password)
 	{
-		return crypt($password, substr(str_replace('+', '.', base64_encode(pack('N4', mt_rand(), mt_rand(), mt_rand(), mt_rand()))), 0, 22));
+		return crypt($password, substr(str_replace('+', '.', base64_encode(random_bytes(16))), 0, 22));
 	}
 }
 
