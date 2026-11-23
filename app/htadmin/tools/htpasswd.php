@@ -18,7 +18,10 @@ class htpasswd {
 	const HTACCESS_NAME = ".htaccess";
 	const HTMETA_NAME = ".htmeta";
 	function __construct($configpath, $use_metadata = false) {
-		$path = realpath ( $configpath );
+		$path = $configpath ? realpath ( $configpath ) : false;
+		if (!$path) {
+			$path = '/app'; // fall back to the default location even if config is missing
+		}
 		$htpasswdfile = $path . "/" . self::HTPASSWD_NAME;
 		@$this->use_metadata = $use_metadata;
 

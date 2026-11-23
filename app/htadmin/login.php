@@ -1,17 +1,18 @@
 <?php
 session_start();
 include_once ('tools/util.php');
+require_config (); // emergency guard, before any output or redirect
 include_once ('tools/htpasswd.php');
 $ini = read_config();
 
 if (isset ( $_POST ['user'] ) && isset ( $_POST ['password'] )) {
 	$username = $_POST ['user'];
 	$password = $_POST ['password'];
-	
-	$hash_tool = htpasswd::create_hash_tool ( $ini ['admin_pwd_hash'] );
+
+	$hash_tool = htpasswd::create_hash_tool ( $ini ['admin_pwd_hash'] ?? '' );
 
 
-	if ($username == $ini['admin_user'] && $hash_tool->check_password_hash($password,$ini['admin_pwd_hash'])) {
+	if ($username == ($ini ['admin_user'] ?? '') && $hash_tool->check_password_hash($password,$ini ['admin_pwd_hash'] ?? '')) {
 		$_SESSION ['login'] = true;
 		header ( 'LOCATION:index.php' );
 		die ();

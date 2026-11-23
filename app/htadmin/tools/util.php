@@ -6,8 +6,24 @@ function check_login() {
 	return false;
 }
 
+function require_config() {
+	if (file_exists ( 'config/config.ini' )) {
+		return;
+	}
+	// Refuse to render with a broken config - this is a security-sensitive tool.
+	echo '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>HTAdmin - Not configured</title></head><body>';
+	echo '<h1>Not configured</h1><div class="alert"><p><strong>HTAdmin is not configured yet.</strong></p>';
+	echo '<p>Create <code>config/config.ini</code> from <code>config/config.ini.example</code> (see the README) and reload this page.</p>';
+	echo '</div></body></html>';
+	exit;
+}
+
 function read_config() {
-	return parse_ini_file('config/config.ini');
+	if (! file_exists ( 'config/config.ini' )) {
+		return array ();
+	}
+	$ini = @parse_ini_file ( 'config/config.ini' );
+	return is_array ( $ini ) ? $ini : array ();
 }
 
 function check_password_quality($pwd) {

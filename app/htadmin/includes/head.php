@@ -1,5 +1,6 @@
 <?php
 include_once ('tools/util.php');
+require_config ();
 if (!isset($ini)) {
 	$ini = read_config ();
 }

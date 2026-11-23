@@ -1,8 +1,8 @@
 <?php
 include_once ('tools/util.php');
+include_once ('includes/head.php'); // refuses to render when not configured
 include_once ('tools/mail.php');
 include_once ('tools/htpasswd.php');
-include_once ('includes/head.php');
 include_once ('includes/nav.php');
 
 $htpasswd = new htpasswd ( $ini ['secure_path'], true );
