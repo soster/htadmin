@@ -8,8 +8,7 @@ if (isset ( $_POST ['user'] ) && isset ( $_POST ['password'] )) {
 	$username = $_POST ['user'];
 	$password = $_POST ['password'];
 	
-	$hash_tool = new crypt_hash_tool();
-	
+	$hash_tool = htpasswd::create_hash_tool ( $ini ['admin_pwd_hash'] );
 
 
 	if ($username == $ini['admin_user'] && $hash_tool->check_password_hash($password,$ini['admin_pwd_hash'])) {

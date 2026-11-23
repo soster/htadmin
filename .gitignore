@@ -10,3 +10,4 @@ app/.htpasswd
 app/.htmeta
 app/.htaccess
 app/index.html
+.pi/

@@ -14,7 +14,7 @@ use_metadata = true
 ; Default password = admin
 ; Change this for live!
 admin_user = admin
-admin_pwd_hash = VPZ23KZUsquyk
+admin_pwd_hash = "$2y$12$4gNYaJ1WFg2.dbgUOW2tn.rjkZtKUH3SLBx8kB.LNrzr6fkpMA8yy"
 
 ; Password reset mail via smtp:
 mail_from = "sometest@something.de"

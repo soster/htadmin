@@ -61,8 +61,30 @@ class md5_hash_tool implements i_password_hash_tool
 
 }
 
+class password_hash_tool implements i_password_hash_tool
+{
+	/**
+	 * Modern password_hash() formats — e.g. bcrypt ($2y$), which works with
+	 * both PHP and nginx/Apache basic auth.
+	 */
+	public function check_password_hash($password, $hash)
+	{
+		return password_verify($password, $hash);
+	}
+
+	public function crypt($password)
+	{
+		return password_hash($password, PASSWORD_BCRYPT);
+	}
+}
+
 class crypt_hash_tool implements i_password_hash_tool
 {
+	/**
+	 * Legacy DES-style (13 character) hashes produced by earlier versions of
+	 * the app. Kept so existing files can still be checked. Never generate
+	 * new hashes with this tool.
+	 */
 	public function check_password_hash($password, $hash)
 	{
 		$salt = substr($hash, 0, 2);
@@ -75,7 +97,8 @@ class crypt_hash_tool implements i_password_hash_tool
 
 	public function crypt($password)
 	{
-		return crypt($password, substr(str_replace('+', '.', base64_encode(random_bytes(16))), 0, 22));
+		// never use the legacy DES scheme for new hashes
+		return password_hash($password, PASSWORD_BCRYPT);
 	}
 }
 

@@ -21,7 +21,11 @@ if (isset ( $_POST ['user'] ) && isset ( $_POST ['oldpwd'] ) && isset ( $_POST [
 	$new = $_POST ['newpwd'];
 	$new2 = $_POST ['newpwd2'];
 	
-	if ($new == $new2 && $htpasswd->user_check ( $username, $old )) {
+	if (!check_password_quality ( $new )) {
+		?>
+			<div class="alert alert-danger">New password must be at least 8 characters.</div>
+		<?php
+	} else if ($new == $new2 && $htpasswd->user_check ( $username, $old )) {
 		$htpasswd->user_update ( $username, $new );
 		?>
 			<div class="alert alert-info">Password changed successfully.</div>

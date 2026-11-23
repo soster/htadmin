@@ -11,7 +11,7 @@ function read_config() {
 }
 
 function check_password_quality($pwd) {
-	if (!isset($pwd)||strlen($pwd)<4) {
+	if (!isset($pwd)||strlen($pwd)<8) {
 		return false;
 	}
 	return true;

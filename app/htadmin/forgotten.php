@@ -83,7 +83,11 @@ $show_standardform = true;
 			$pwd = $_POST ['pwd'];
 			$meta_models = $htpasswd->get_metadata ();
 			$meta_model = $meta_models[$user] ?? null;
-			if (isset ( $meta_model ) && $meta_model->mailkey === $key) {
+			if (!check_password_quality ( $pwd )) {
+				$alert_class = "alert-danger";
+				$alert_message = "New password must be at least 8 characters.";
+				include_once ('includes/inline_message.php');
+			} else if (isset ( $meta_model ) && $meta_model->mailkey === $key) {
 				$htpasswd->user_update ( $user, $pwd );
 				$meta_model->mailkey = random_password ( PASSWORD_LENGTH );
 				$htpasswd->meta_update ( $meta_model );
