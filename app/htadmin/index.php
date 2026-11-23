@@ -27,11 +27,18 @@ if (isset ( $_POST ['user'] )) {
 		$meta_model->mailkey = random_password(PASSWORD_LENGTH);
 	}
 	
-	if (! check_username ( $username ) || ! check_password_quality ( $passwd )) {
+	$errors = array ();
+	if (! check_username ( $username )) {
+		$errors[] = 'invalid username (3-20 characters, letters and digits only)';
+	}
+	if (! check_password_quality ( $passwd )) {
+		$errors[] = 'password must be at least 8 characters';
+	}
+	if (count ( $errors ) > 0) {
 		?>
 			<div class="alert alert-danger">
 			<?php
-		echo "<p>User <em>" . htmlspecialchars ( $username ) . "</em> is invalid!.</p>";
+		echo "<p>User <em>" . htmlspecialchars ( $username ) . "</em> is invalid: " . htmlspecialchars ( implode ( '; ', $errors ) ) . "</p>";
 	} else {
 		?>
 			<div class="alert alert-info">
